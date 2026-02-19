@@ -37,6 +37,7 @@ struct CacheDropMenuBarView: View {
                 }
                 
                 Tab("Android Studio", systemImage: "paperplane", value: .androidStudio)  {
+                    Spacer()
                     AndroidStudioView()
                        
                 }
@@ -69,12 +70,14 @@ struct XcodeView : View {
         DeviceSupportView()
         
         AutomationView()
+        
+        Spacer()
     }
 }
 
 struct AndroidStudioView : View {
     var body: some View {
-        Text("Android Studio View")
+        Text("Coming soon!")
     }
 }
 

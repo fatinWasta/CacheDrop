@@ -32,15 +32,26 @@ struct ArchivesView: View {
                 
                 Spacer()
                 
-                Text(viewModel.sizeText)
-                    .font(.system(size: 11,
-                                  weight: .medium,
-                                  design: .default))
-                Button(action: {
-                    viewModel.clear()
-                }) {
-                    Image(systemName: "trash")
+                
+                if viewModel.isLoading {
+                    ProgressView("")
+                        .scaleEffect(0.5)
+                        .cornerRadius(10)
+                        .shadow(radius: 10)
+                        .transition(.opacity)
+                        .animation(.easeInOut, value: viewModel.isLoading)
+                } else {
+                    Text(viewModel.sizeText)
+                        .font(.system(size: 11,
+                                      weight: .medium,
+                                      design: .default))
+                    Button(action: {
+                        viewModel.clear()
+                    }) {
+                        Image(systemName: "trash")
+                    }
                 }
+                
             }
             
             Text(viewModel.getArchiveCountText())

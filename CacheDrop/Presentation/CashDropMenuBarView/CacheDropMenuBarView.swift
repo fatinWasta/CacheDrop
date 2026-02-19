@@ -64,50 +64,77 @@ struct CacheDropMenuBarView: View {
 
 struct XcodeView : View {
     
-    let derivedDataToolTip = "Derived Data is like a folder where Xcode keeps the LEGO pieces it builds for your app. If it gets messy, you can throw it away and Xcode will build fresh LEGO pieces again."
-
-    
     var body: some View {
         Spacer()
-        
-        DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
-                                                        location: XcodeStorageLocation.derivedData),
-                        viewType: .derivedData)
-        
-        
-        ArchivesView()
-        
-        DeviceSupportView()
-        
-        AutomationView()
+      
+//        if CacheDropIDEChecker.userMacMachine(has: .xcode) {
+//            DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+//                                                            location: XcodeStorageLocation.derivedData),
+//                            viewType: .derivedData)
+//            
+//            
+//            ArchivesView()
+//            
+//            DeviceSupportView()
+//            
+//            AutomationView()
+//        } else {
+//            IDENotInstalledView(.xcode)
+//        }
+       
+        IDENotInstalledView(.xcode)
         
         Spacer()
     }
 }
 
 struct AndroidStudioView : View {
-    let gradleToolTip = "A storage box where Android Studio keeps saved building pieces so it can build apps faster. If cleaned, it can download them again."
     
     var body: some View {
         
         Spacer()
-        DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
-                                                        location: AndroidStudioStorageLocation.gradleCaches),
-                        viewType: .gradle)
+       
+        if CacheDropIDEChecker.userMacMachine(has: .xcode) {
+            DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                            location: AndroidStudioStorageLocation.gradleCaches),
+                            viewType: .gradle)
+            
+            DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                            location: AndroidStudioStorageLocation.cacheGoogle),
+                            viewType: .cacheGoogle)
+            
+            DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                            location: AndroidStudioStorageLocation.applicationSupport),
+                            viewType: .applicationSupport)
+            
+            DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                            location: AndroidStudioStorageLocation.logsGoogle),
+                            viewType: .logsGoogle)
+        } else {
+            IDENotInstalledView(.androidStudio)
+        }
         
-        DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
-                                                        location: AndroidStudioStorageLocation.cacheGoogle),
-                        viewType: .cacheGoogle)
+        Spacer()
         
-        DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
-                                                        location: AndroidStudioStorageLocation.applicationSupport),
-                        viewType: .applicationSupport)
-        
-        DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
-                                                        location: AndroidStudioStorageLocation.logsGoogle),
-                        viewType: .logsGoogle)
         
     }
 }
 
 
+struct IDENotInstalledView: View {
+    let uninstalledIDE: CacheDropIDE
+    
+    init (_ uninstalledIDE: CacheDropIDE) {
+        self.uninstalledIDE = uninstalledIDE
+    }
+        
+    var body: some View {
+        Image(systemName: "laptopcomputer.trianglebadge.exclamationmark")
+            .font(.system(size: 50))
+            .symbolRenderingMode(.palette)
+            .foregroundStyle(.yellow, .red)
+            
+        Text(uninstalledIDE.ideNotAvailableError)
+            .padding()
+    }
+}

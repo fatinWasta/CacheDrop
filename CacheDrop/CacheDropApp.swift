@@ -9,9 +9,20 @@ import SwiftUI
 
 @main
 struct CacheDropApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
+        private let viewModel: CacheDropViewModel
+        
+        init() {
+            let repository = FileManagerStorageRepository()
+            let useCase = GetStorageUseCase(repository: repository)
+            viewModel = CacheDropViewModel(storageUseCase: useCase)
         }
-    }
+        
+        var body: some Scene {
+            MenuBarExtra {
+                CacheDropMenuBarView(viewModel: viewModel)
+            } label: {
+                Image("MenuBarIcon")
+            }
+            .menuBarExtraStyle(.window)
+        }
 }

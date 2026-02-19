@@ -1,5 +1,5 @@
 //
-//  XcodeFolders.swift
+//  XcodeStorageLocation.swift
 //  CacheDrop
 //
 //  Created by Fatin on 16/02/26.
@@ -7,14 +7,6 @@
 
 import Foundation
 
-protocol ClearableLocation {
-    var url: URL { get }
-    var displayName: String { get }
-}
-
-extension ClearableLocation {
-    var id: String { displayName }
-}
 
 public enum XcodeStorageLocation: ClearableLocation, CaseIterable, Codable {
     case derivedData

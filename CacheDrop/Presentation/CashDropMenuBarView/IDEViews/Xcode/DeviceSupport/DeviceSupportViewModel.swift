@@ -26,7 +26,7 @@ final class DeviceSupportViewModel: ObservableObject {
     init(repository: XcodeDeviceSupportRepository) {
         self.repository = repository
         coordinator = StorageCoordinator(
-            location: .deviceSupport,
+            location: XcodeStorageLocation.deviceSupport,
             repository: repository
         )
         bind()

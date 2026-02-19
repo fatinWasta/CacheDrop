@@ -7,7 +7,7 @@
 import Foundation
 
 struct AutomationSetting: Codable {
-    let type: XcodeStorageLocation
+    let locationKey: String
     var isEnabled: Bool
     var frequency: CleaningFrequency
     var nextRunAt: Date?
@@ -24,13 +24,12 @@ extension AutomationSetting {
     }
 }
 
-extension DateFormatter {
+
+
+enum LocationRegistry {
     
-    static let automationFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        formatter.locale = .current
-        return formatter
-    }()
+    static func resolve(key: String) -> (any ClearableLocation)? {
+        XcodeStorageLocation.allCases.first { $0.persistenceKey == key }
+        ?? AndroidStudioStorageLocation.allCases.first { $0.persistenceKey == key }
+    }
 }

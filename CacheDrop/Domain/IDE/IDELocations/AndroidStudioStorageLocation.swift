@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum AndroidStudioLocation: ClearableLocation, CaseIterable, Codable {
+public enum AndroidStudioStorageLocation: ClearableLocation, CaseIterable, Codable {
     
     case gradleCaches
     case ideCaches
@@ -49,15 +49,16 @@ public enum AndroidStudioLocation: ClearableLocation, CaseIterable, Codable {
                 .appendingPathComponent("Logs/Google", isDirectory: true)
         }
     }
-}
-
-extension AndroidStudioLocation {
+    
     var persistenceKey: String {
         switch self {
-        case .gradleCaches: return "gradleCaches"
-        case .ideCaches: return "ideCaches"
-        case .applicationSupport: return "applicationSupport"
-        case .logs: return "logs"
+        case .gradleCaches: return "as.gradleCaches"
+        case .ideCaches: return "as.ideCaches"
+        case .applicationSupport: return "as.applicationSupport"
+        case .logs: return "as.logs"
         }
     }
+    
 }
+
+

@@ -47,10 +47,12 @@ struct AutomationView: View {
                               design: .default))
             
             DerivedDataAutomationView(setting: $viewModel.derivedDataSetting,
-                                      onToggle: { viewModel.toggleDerivedData() })
+                                      onToggle: { viewModel.toggleDerivedData() }
+            )
             
             ArchiveAutomationView(setting: $viewModel.archivesSetting,
-                                  onToggle: { viewModel.toggleArchives() })
+                                  onToggle: { viewModel.toggleArchives() }
+            )
             
         }
         
@@ -88,7 +90,7 @@ struct DerivedDataAutomationView: View {
                         Text($0.rawValue).tag($0)
                     }
                 }
-                .pickerStyle(.menu)
+                .pickerStyle(.automatic)
                 .frame(width: 200)
                 .onChange(of: setting.frequency ) {
                     onToggle()

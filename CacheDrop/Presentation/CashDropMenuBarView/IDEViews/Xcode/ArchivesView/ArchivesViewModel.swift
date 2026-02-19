@@ -29,7 +29,7 @@ final class ArchivesViewModel: ObservableObject {
     init(repository: XcodeArchiveStorageRepository) {
         self.repository = repository
         coordinator = StorageCoordinator(
-            location: .archives,
+            location: XcodeStorageLocation.archives,
             repository: repository
         )
         

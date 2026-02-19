@@ -28,22 +28,31 @@ final class AutomationViewModel: ObservableObject {
     @Published var archivesSetting: AutomationSetting
     @Published var derivedDataSetting: AutomationSetting
    
-    private var timers: [XcodeStorageLocation: Timer] = [:]
+    private var timers: [String: Timer] = [:]
+    
     private let storage = AutomationStorage()
     private let useCase: DefaultAutomationUseCase
     
     init(useCase: DefaultAutomationUseCase) {
         self.useCase = useCase
         
-        self.derivedDataSetting = storage.load(location: .derivedData)  ?? AutomationSetting(type: .derivedData,
-                                                                                             isEnabled: false,
-                                                                                             frequency: .day,
-                                                                                             nextRunAt: nil)
-        
-        self.archivesSetting = storage.load(location: .archives) ?? AutomationSetting(type: .archives,
-                                                                                      isEnabled: false,
-                                                                                      frequency: .day,
-                                                                                      nextRunAt: nil)
+        self.derivedDataSetting =
+            storage.load(for: XcodeStorageLocation.derivedData)
+            ?? AutomationSetting(
+                locationKey: XcodeStorageLocation.derivedData.persistenceKey,
+                isEnabled: false,
+                frequency: .day,
+                nextRunAt: nil
+            )
+
+        self.archivesSetting =
+            storage.load(for: XcodeStorageLocation.archives)
+            ?? AutomationSetting(
+                locationKey: XcodeStorageLocation.archives.persistenceKey,
+                isEnabled: false,
+                frequency: .day,
+                nextRunAt: nil
+            )
         
         restoreIfNeeded()
     }
@@ -56,14 +65,13 @@ final class AutomationViewModel: ObservableObject {
         handle(setting: archivesSetting)
     }
 }
-
 private extension AutomationViewModel {
     
-    private func handle(setting: AutomationSetting) {
+    func handle(setting: AutomationSetting) {
         
         if !setting.isEnabled {
-            cancel(setting.type)
-            storage.remove(location: setting.type)
+            cancel(setting.locationKey)
+            storage.remove(for: setting.locationKey)
             return
         }
         
@@ -72,20 +80,26 @@ private extension AutomationViewModel {
         
         storage.save(updated)
         apply(updated)
-        
         schedule(updated)
     }
     
-    private func apply(_ setting: AutomationSetting) {
-        switch setting.type {
-        case .derivedData:
+    
+    func apply(_ setting: AutomationSetting) {
+        switch setting.locationKey {
+        case XcodeStorageLocation.derivedData.persistenceKey:
             derivedDataSetting = setting
-        case .archives:
+            
+        case XcodeStorageLocation.archives.persistenceKey:
             archivesSetting = setting
-        case .deviceSupport:
+            
+        case XcodeStorageLocation.deviceSupport.persistenceKey:
+            break
+            
+        default:
             break
         }
     }
+    
     
     func restoreIfNeeded() {
         let settings: [AutomationSetting] = [
@@ -109,7 +123,7 @@ private extension AutomationViewModel {
     }
     
     
-    private func runAutomation(for setting: AutomationSetting) {
+    func runAutomation(for setting: AutomationSetting) {
         
         useCase.execute(setting: setting)
         
@@ -117,17 +131,16 @@ private extension AutomationViewModel {
         updated.nextRunAt = Date.next4PM(frequency: setting.frequency)
         
         storage.save(updated)
-        
         apply(updated)
-        
         schedule(updated)
     }
+    
     
     func schedule(_ setting: AutomationSetting) {
         
         guard let nextRun = setting.nextRunAt else { return }
         
-        cancel(setting.type)
+        cancel(setting.locationKey)
         
         let interval = nextRun.timeIntervalSinceNow
         guard interval > 0 else { return }
@@ -136,13 +149,13 @@ private extension AutomationViewModel {
             self?.runAutomation(for: setting)
         }
         
-        timers[setting.type] = timer
+        timers[setting.locationKey] = timer
         RunLoop.main.add(timer, forMode: .common)
     }
     
-    func cancel(_ location: XcodeStorageLocation) {
-        timers[location]?.invalidate()
-        timers.removeValue(forKey: location)
-    }
     
+    func cancel(_ locationKey: String) {
+        timers[locationKey]?.invalidate()
+        timers.removeValue(forKey: locationKey)
+    }
 }

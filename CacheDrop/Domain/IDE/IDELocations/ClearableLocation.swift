@@ -7,9 +7,10 @@
 
 import Foundation
 
-protocol ClearableLocation {
+protocol ClearableLocation: CaseIterable, Codable {
     var url: URL { get }
     var displayName: String { get }
+    var persistenceKey: String { get } 
 }
 
 extension ClearableLocation {

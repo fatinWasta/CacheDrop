@@ -20,7 +20,7 @@ final class DerivedDataViewModel: ObservableObject {
     
     init(repository: IDEStorageRepository) {
         coordinator = StorageCoordinator(
-            location: .derivedData,
+            location: XcodeStorageLocation.derivedData,
             repository: repository
         )
         

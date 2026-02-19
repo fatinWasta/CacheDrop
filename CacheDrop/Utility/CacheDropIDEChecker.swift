@@ -29,6 +29,15 @@ enum CacheDropIDE {
             return "Android Studio is not installed on your machine."
         }
     }
+    
+    var imageName:String {
+        switch self {
+        case .xcode:
+            return "XcodeWarning"
+        case .androidStudio:
+            return "AndroidWarning"
+        }
+    }
 }
 
 class CacheDropIDEChecker {

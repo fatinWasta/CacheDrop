@@ -67,23 +67,21 @@ struct XcodeView : View {
     var body: some View {
         Spacer()
       
-//        if CacheDropIDEChecker.userMacMachine(has: .xcode) {
-//            DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
-//                                                            location: XcodeStorageLocation.derivedData),
-//                            viewType: .derivedData)
-//            
-//            
-//            ArchivesView()
-//            
-//            DeviceSupportView()
-//            
-//            AutomationView()
-//        } else {
-//            IDENotInstalledView(.xcode)
-//        }
-       
-        IDENotInstalledView(.xcode)
-        
+        if CacheDropIDEChecker.userMacMachine(has: .xcode) {
+            DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                            location: XcodeStorageLocation.derivedData),
+                            viewType: .derivedData)
+            
+            
+            ArchivesView()
+            
+            DeviceSupportView()
+            
+            AutomationView()
+        } else {
+            IDENotInstalledView(.xcode)
+        }
+               
         Spacer()
     }
 }
@@ -93,7 +91,6 @@ struct AndroidStudioView : View {
     var body: some View {
         
         Spacer()
-       
         if CacheDropIDEChecker.userMacMachine(has: .xcode) {
             DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
                                                             location: AndroidStudioStorageLocation.gradleCaches),
@@ -129,12 +126,15 @@ struct IDENotInstalledView: View {
     }
         
     var body: some View {
-        Image(systemName: "laptopcomputer.trianglebadge.exclamationmark")
-            .font(.system(size: 50))
-            .symbolRenderingMode(.palette)
-            .foregroundStyle(.yellow, .red)
-            
-        Text(uninstalledIDE.ideNotAvailableError)
-            .padding()
+        VStack {
+            Image(uninstalledIDE.imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 150, height: 150)
+                
+            Text(uninstalledIDE.ideNotAvailableError)
+                .padding()
+        }
+        
     }
 }

@@ -13,6 +13,17 @@ final class CacheDropViewModel: ObservableObject {
     
     @Published private(set) var progressBarValue: Double = 0.0
 
+    var storageBarColor: Color {
+        switch progressBarValue {
+        case ..<0.5:
+            return .green
+        case ..<0.75:
+            return .orange
+        default:
+            return .red
+        }
+    }
+    
     private(set) var displayText: String = "--"
     
     private let getStorageUseCase: GetStorageUseCase

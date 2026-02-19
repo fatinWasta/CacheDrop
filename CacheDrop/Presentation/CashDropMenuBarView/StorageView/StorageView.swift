@@ -28,6 +28,7 @@ struct StorageView: View {
             ProgressView(value: viewModel.progressBarValue)
                 .progressViewStyle(.linear)
                 .controlSize(.mini)
+                .tint(viewModel.storageBarColor)
             
             Text(viewModel.displayText)
                 .font(.system(size: 11,

@@ -1,27 +1,40 @@
 //
-//  GradleCacheView.swift
+//  DisplaySizeView.swift
 //  CacheDrop
 //
 //  Created by Fatin on 19/02/26.
 //
+
 import SwiftUI
 
-struct GradleCacheView: View {
+enum ViewType {
+    case derivedData
+    case archives
+    case gradle
+}
 
-    let derivedDataToolTip = "Derived Data is like a folder where Xcode keeps the LEGO pieces it builds for your app. If it gets messy, you can throw it away and Xcode will build fresh LEGO pieces again."
-    
-    @StateObject private var viewModel = DerivedDataViewModel(
-        repository: DefaultIDEStorageRepository()
-    )
+struct DisplaySizeView: View {
+    @ObservedObject private var viewModel: DisplaySizeViewModel
+    let title: String
+    let toolTip: String
+
+    init(viewModel: DisplaySizeViewModel,
+         title: String,
+         toolTip: String) {
         
+        self.viewModel = viewModel
+        self.title = title
+        self.toolTip = toolTip
+    }
+    
     var body: some View {
         HStack {
-            Text("DerivedData")
+            Text(title)
                 .font(.system(size: 14,
                               weight: .medium,
                               design: .default))
            
-            ToolTipButtonView(toolTip: derivedDataToolTip)
+            ToolTipButtonView(toolTip: toolTip)
             
             Spacer()
             

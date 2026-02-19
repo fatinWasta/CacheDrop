@@ -31,7 +31,7 @@ struct CacheDropMenuBarView: View {
             
             TabView(selection: $selectedTab) {
                 Tab("Xcode", image: "MenuBarIcon", value: .xcode)  {
-                    Spacer()
+                    
                     XcodeView()
                         .frame(width: menuViewWidth - 50)
                 }
@@ -62,10 +62,26 @@ struct CacheDropMenuBarView: View {
 
 
 struct XcodeView : View {
+    
+    let derivedDataToolTip = "Derived Data is like a folder where Xcode keeps the LEGO pieces it builds for your app. If it gets messy, you can throw it away and Xcode will build fresh LEGO pieces again."
+
+    
     var body: some View {
-        DerivedDataView()
+        Spacer()
         
-        ArchivesView()
+        DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                        location: XcodeStorageLocation.derivedData),
+                        title: "Derived Data",
+                        toolTip: derivedDataToolTip)
+        
+        //DerivedDataView()
+        
+        DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                        location: XcodeStorageLocation.archives),
+                        title: "Archives",
+                        toolTip: derivedDataToolTip)
+        //ArchivesView()
+        
         
         DeviceSupportView()
         
@@ -76,8 +92,16 @@ struct XcodeView : View {
 }
 
 struct AndroidStudioView : View {
+    let gradleToolTip = "A storage box where Android Studio keeps saved building pieces so it can build apps faster. If cleaned, it can download them again."
+    
     var body: some View {
-        Text("Coming soon!")
+        
+        Spacer()
+        DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                        location: AndroidStudioStorageLocation.gradleCaches),
+                        title: "Gradle Caches",
+                        toolTip: gradleToolTip)
+        
     }
 }
 

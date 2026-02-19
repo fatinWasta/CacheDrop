@@ -53,7 +53,7 @@ struct DeviceSupportView: View {
                 } label: {
                     Text("Versions")
                         .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(Color("AccentColor"))
+                        .foregroundColor(.blue)
                 }
                 .padding(.top, 4)
             }

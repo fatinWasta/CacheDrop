@@ -10,19 +10,19 @@ import Foundation
 public enum AndroidStudioStorageLocation: ClearableLocation, CaseIterable, Codable {
     
     case gradleCaches
-    case ideCaches
+    case cacheGoogle
     case applicationSupport
-    case logs
+    case logsGoogle
     
     var displayName: String {
         switch self {
         case .gradleCaches:
             return "Gradle Caches"
-        case .ideCaches:
+        case .cacheGoogle:
             return "IDE Cache"
         case .applicationSupport:
             return "Application Support"
-        case .logs:
+        case .logsGoogle:
             return "Logs"
         }
     }
@@ -36,7 +36,7 @@ public enum AndroidStudioStorageLocation: ClearableLocation, CaseIterable, Codab
             return home
                 .appendingPathComponent(".gradle/caches", isDirectory: true)
             
-        case .ideCaches:
+        case .cacheGoogle:
             return library
                 .appendingPathComponent("Caches/Google", isDirectory: true)
             
@@ -44,7 +44,7 @@ public enum AndroidStudioStorageLocation: ClearableLocation, CaseIterable, Codab
             return library
                 .appendingPathComponent("Application Support/Google", isDirectory: true)
             
-        case .logs:
+        case .logsGoogle:
             return library
                 .appendingPathComponent("Logs/Google", isDirectory: true)
         }
@@ -53,9 +53,9 @@ public enum AndroidStudioStorageLocation: ClearableLocation, CaseIterable, Codab
     var persistenceKey: String {
         switch self {
         case .gradleCaches: return "as.gradleCaches"
-        case .ideCaches: return "as.ideCaches"
+        case .cacheGoogle: return "as.cacheGoogle"
         case .applicationSupport: return "as.applicationSupport"
-        case .logs: return "as.logs"
+        case .logsGoogle: return "as.logsGoogle"
         }
     }
     

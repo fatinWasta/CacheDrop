@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum ViewType {
-    case derivedData
-    case archives
-    case gradle
-}
 
 struct DisplaySizeView: View {
     @ObservedObject private var viewModel: DisplaySizeViewModel
@@ -19,12 +14,11 @@ struct DisplaySizeView: View {
     let toolTip: String
 
     init(viewModel: DisplaySizeViewModel,
-         title: String,
-         toolTip: String) {
+         viewType: ViewType) {
         
         self.viewModel = viewModel
-        self.title = title
-        self.toolTip = toolTip
+        self.title = viewType.title
+        self.toolTip = viewType.toolTip
     }
     
     var body: some View {

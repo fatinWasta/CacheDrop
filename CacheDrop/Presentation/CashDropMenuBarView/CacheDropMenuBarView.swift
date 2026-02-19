@@ -39,6 +39,7 @@ struct CacheDropMenuBarView: View {
                 Tab("Android Studio", systemImage: "paperplane", value: .androidStudio)  {
                     Spacer()
                     AndroidStudioView()
+                        .frame(width: menuViewWidth - 50)
                        
                 }
 
@@ -71,17 +72,10 @@ struct XcodeView : View {
         
         DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
                                                         location: XcodeStorageLocation.derivedData),
-                        title: "Derived Data",
-                        toolTip: derivedDataToolTip)
+                        viewType: .derivedData)
         
-        //DerivedDataView()
         
-        DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
-                                                        location: XcodeStorageLocation.archives),
-                        title: "Archives",
-                        toolTip: derivedDataToolTip)
-        //ArchivesView()
-        
+        ArchivesView()
         
         DeviceSupportView()
         
@@ -99,8 +93,19 @@ struct AndroidStudioView : View {
         Spacer()
         DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
                                                         location: AndroidStudioStorageLocation.gradleCaches),
-                        title: "Gradle Caches",
-                        toolTip: gradleToolTip)
+                        viewType: .gradle)
+        
+        DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                        location: AndroidStudioStorageLocation.cacheGoogle),
+                        viewType: .cacheGoogle)
+        
+        DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                        location: AndroidStudioStorageLocation.applicationSupport),
+                        viewType: .applicationSupport)
+        
+        DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                        location: AndroidStudioStorageLocation.logsGoogle),
+                        viewType: .logsGoogle)
         
     }
 }

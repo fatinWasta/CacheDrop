@@ -36,7 +36,8 @@ jobs:
           build-mode: ${{ matrix.build-mode }}
 
       # Manual build steps for Swift
-      - name: Build Swift project
+      
+      - name: Build Swift project for codeQL
         if: matrix.language == 'swift' && matrix.build-mode == 'manual'
         shell: bash
         run: |
@@ -51,11 +52,12 @@ jobs:
           # Build the main app target in Release mode
           xcodebuild -project CacheDrop.xcodeproj \
                      -scheme CacheDrop \
-                     -configuration Release \
+                     -configuration Debug \
                      -sdk iphonesimulator \
-                     CODE_SIGN_IDENTITY="" \
-                     CODE_SIGNING_REQUIRED=NO \
-                     clean build
+                      SWIFT_OPTIMIZATION_LEVEL=-Onone \
+                      CODE_SIGN_IDENTITY="" \
+                      CODE_SIGNING_REQUIRED=NO \
+                      clean build
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4

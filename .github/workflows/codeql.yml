@@ -36,29 +36,39 @@ jobs:
           build-mode: ${{ matrix.build-mode }}
 
       # Manual build steps for Swift
-      
-      - name: Build Swift project for codeQL
+      - name: Build Swift project for CodeQL
         if: matrix.language == 'swift' && matrix.build-mode == 'manual'
         shell: bash
         run: |
-          # Clean Derived Data to avoid CI caching issues
+          echo "Cleaning Derived Data..."
           rm -rf ~/Library/Developer/Xcode/DerivedData/*
 
-          # Install dependencies if using CocoaPods
+          echo "Resolving Swift Packages..."
+          xcodebuild -resolvePackageDependencies
+
+          # Optional: Install CocoaPods if Podfile exists
           if [ -f Podfile ]; then
+            echo "Installing CocoaPods dependencies..."
             pod install
           fi
 
-          # Build the main app target in Release mode
+          echo "Building CacheDrop for x86_64..."
           xcodebuild -project CacheDrop.xcodeproj \
                      -scheme CacheDrop \
                      -configuration Debug \
-                     -sdk iphonesimulator \
-                      SWIFT_OPTIMIZATION_LEVEL=-Onone \
-                      CODE_SIGN_IDENTITY="" \
-                      CODE_SIGNING_REQUIRED=NO \
-                      EXCLUDED_ARCHS="arm64" \
-                      clean build
+                     -destination 'platform=macOS,arch=x86_64' \
+                     SWIFT_OPTIMIZATION_LEVEL=-Onone \
+                     CODE_SIGN_IDENTITY="" \
+                     CODE_SIGNING_REQUIRED=NO \
+                     EXCLUDED_ARCHS="arm64" \
+                     clean build \
+                     | tee xcodebuild.log
+
+          # Fail early if build failed
+          if ! tail -n 10 xcodebuild.log | grep -q "BUILD SUCCEEDED"; then
+            echo "Xcode build failed. See xcodebuild.log for details."
+            exit 1
+          fi
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4

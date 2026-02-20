@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum cleaningFrequency: String, CaseIterable, Identifiable {
-    case day, week, month
-    var id: String { self.rawValue }
-}
-
 struct AutomationView: View {
     
     let automationToolTip = "This section is like a robot cleaner for Xcode. It safely throws away old leftover files to make more space and keep things tidy."
@@ -47,10 +42,12 @@ struct AutomationView: View {
                               design: .default))
             
             DerivedDataAutomationView(setting: $viewModel.derivedDataSetting,
-                                      onToggle: { viewModel.toggleDerivedData() })
+                                      onToggle: { viewModel.toggleDerivedData() }
+            )
             
             ArchiveAutomationView(setting: $viewModel.archivesSetting,
-                                  onToggle: { viewModel.toggleArchives() })
+                                  onToggle: { viewModel.toggleArchives() }
+            )
             
         }
         
@@ -65,6 +62,7 @@ struct AutomationView: View {
 
 
 struct DerivedDataAutomationView: View {
+
     @Binding var setting: AutomationSetting
     var onToggle: () -> Void
 
@@ -82,13 +80,13 @@ struct DerivedDataAutomationView: View {
                         .foregroundColor(.secondary)
                 }
                 
-                
                 Picker("Every", selection: $setting.frequency) {
-                    ForEach(CleaningFrequency.allCases, id: \.self) {
-                        Text($0.rawValue).tag($0)
+                    ForEach(CleaningFrequency.allCases, id: \.self) { frequency in
+                        Text(frequency.rawValue.capitalized)
+                            .tag(frequency)
                     }
                 }
-                .pickerStyle(.menu)
+                .pickerStyle(.automatic)
                 .frame(width: 200)
                 .onChange(of: setting.frequency ) {
                     onToggle()
@@ -99,6 +97,7 @@ struct DerivedDataAutomationView: View {
             
             Toggle("", isOn: $setting.isEnabled)
                 .toggleStyle(.switch)
+                .tint(.red)
                 .labelsHidden()
                 .padding()
                 .onChange(of: setting.isEnabled) {
@@ -129,10 +128,10 @@ struct ArchiveAutomationView: View {
                         .foregroundColor(.secondary)
                 }
                 
-                
                 Picker("Every", selection: $setting.frequency) {
-                    ForEach(CleaningFrequency.allCases, id: \.self) {
-                        Text($0.rawValue).tag($0)
+                    ForEach(CleaningFrequency.allCases, id: \.self) { frequency in
+                        Text(frequency.rawValue.capitalized)
+                            .tag(frequency)
                     }
                 }
                 .pickerStyle(.menu)

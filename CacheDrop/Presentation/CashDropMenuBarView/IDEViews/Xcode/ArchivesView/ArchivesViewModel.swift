@@ -1,34 +1,38 @@
-//
-//  DeviceSupportViewModel.swift
-//  CacheDrop
-//
-//  Created by Fatin on 16/02/26.
-//
-
-
+    //
+    //  ArchivesViewModel.swift
+    //  CacheDrop
+    //
+    //  Created by Fatin on 16/02/26.
+    //
 import SwiftUI
 import Combine
 
+struct DirectoryItem: Identifiable {
+    let id = UUID()
+    let name: String
+    let size: UInt64
+}
+
 @MainActor
-final class DeviceSupportViewModel: ObservableObject {
+final class ArchivesViewModel: ObservableObject {
     
     @Published private(set) var size: UInt64 = 0
     @Published var isLoading = false
     @Published var errorMessage: String?
-   
-    @Published var deviceSupports: [DirectoryItem] = []
-
-    private let repository: XcodeDeviceSupportRepository
-
+    
+    @Published var archiveItems: [DirectoryItem] = [] 
+    
+    private let repository: XcodeArchiveStorageRepository
     private let coordinator: StorageCoordinator
     private var cancellables = Set<AnyCancellable>()
     
-    init(repository: XcodeDeviceSupportRepository) {
+    init(repository: XcodeArchiveStorageRepository) {
         self.repository = repository
         coordinator = StorageCoordinator(
-            location: .deviceSupport,
+            location: XcodeStorageLocation.archives,
             repository: repository
         )
+        
         bind()
     }
     
@@ -39,7 +43,7 @@ final class DeviceSupportViewModel: ObservableObject {
     func load() {
         coordinator.load()
         Task {
-            await fetchDeviceSupport()
+            await fetchArchives()
         }
     }
     
@@ -47,17 +51,21 @@ final class DeviceSupportViewModel: ObservableObject {
         coordinator.clear()
     }
     
+    func getArchiveCountText() -> String {
+        return archiveItems.count > 0 ? "Found \(archiveItems.count) archives" : "No archives found"
+    }
     
 }
 
-private extension DeviceSupportViewModel {
-    func fetchDeviceSupport() async {
+private extension ArchivesViewModel {
+    
+    func fetchArchives() async {
         isLoading = true
         defer { isLoading = false }
         
         do {
-            deviceSupports = try await repository.listXcodeDeviceSupports()
-            size = deviceSupports.reduce(0) { $0 + $1.size }
+            archiveItems = try await repository.listXcodeArchives()
+            size = archiveItems.reduce(0) { $0 + $1.size }
         } catch {
             errorMessage = error.localizedDescription
         }

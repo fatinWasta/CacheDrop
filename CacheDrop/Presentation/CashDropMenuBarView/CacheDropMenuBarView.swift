@@ -31,13 +31,15 @@ struct CacheDropMenuBarView: View {
             
             TabView(selection: $selectedTab) {
                 Tab("Xcode", image: "MenuBarIcon", value: .xcode)  {
-                    Spacer()
+                    
                     XcodeView()
                         .frame(width: menuViewWidth - 50)
                 }
                 
                 Tab("Android Studio", systemImage: "paperplane", value: .androidStudio)  {
+                    Spacer()
                     AndroidStudioView()
+                        .frame(width: menuViewWidth - 50)
                        
                 }
 
@@ -61,21 +63,78 @@ struct CacheDropMenuBarView: View {
 
 
 struct XcodeView : View {
+    
     var body: some View {
-        DerivedDataView()
-        
-        ArchivesView()
-        
-        DeviceSupportView()
-        
-        AutomationView()
+        Spacer()
+      
+        if CacheDropIDEChecker.userMacMachine(has: .xcode) {
+            DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                            location: XcodeStorageLocation.derivedData),
+                            viewType: .derivedData)
+            
+            
+            ArchivesView()
+            
+            DeviceSupportView()
+            
+            AutomationView()
+        } else {
+            IDENotInstalledView(.xcode)
+        }
+               
+        Spacer()
     }
 }
 
 struct AndroidStudioView : View {
+    
     var body: some View {
-        Text("Android Studio View")
+        
+        Spacer()
+        if CacheDropIDEChecker.userMacMachine(has: .xcode) {
+            DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                            location: AndroidStudioStorageLocation.gradleCaches),
+                            viewType: .gradle)
+            
+            DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                            location: AndroidStudioStorageLocation.cacheGoogle),
+                            viewType: .cacheGoogle)
+            
+            DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                            location: AndroidStudioStorageLocation.applicationSupport),
+                            viewType: .applicationSupport)
+            
+            DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
+                                                            location: AndroidStudioStorageLocation.logsGoogle),
+                            viewType: .logsGoogle)
+        } else {
+            IDENotInstalledView(.androidStudio)
+        }
+        
+        Spacer()
+        
+        
     }
 }
 
 
+struct IDENotInstalledView: View {
+    let uninstalledIDE: CacheDropIDE
+    
+    init (_ uninstalledIDE: CacheDropIDE) {
+        self.uninstalledIDE = uninstalledIDE
+    }
+        
+    var body: some View {
+        VStack {
+            Image(uninstalledIDE.imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 150, height: 150)
+                
+            Text(uninstalledIDE.ideNotAvailableError)
+                .padding()
+        }
+        
+    }
+}

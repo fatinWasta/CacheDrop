@@ -22,8 +22,13 @@ final class DefaultAutomationUseCase: AutomationUseCase {
     func execute(setting: AutomationSetting) {
         guard setting.isEnabled else { return }
         
+        guard let location = LocationRegistry.resolve(key: setting.locationKey) else {
+            assertionFailure("Invalid location key: \(setting.locationKey)")
+            return
+        }
+        
         Task {
-            try? await repository.delete(location: setting.type)
+            try? await repository.delete(location: location)
         }
     }
 }

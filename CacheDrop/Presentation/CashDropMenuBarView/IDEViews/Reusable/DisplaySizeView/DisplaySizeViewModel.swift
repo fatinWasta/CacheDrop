@@ -1,15 +1,14 @@
     //
-    //  DerivedDataViewModel.swift
+    //  DisplaySizeViewModel.swift
     //  CacheDrop
     //
-    //  Created by Fatin on 16/02/26.
+    //  Created by Fatin on 19/02/26.
     //
 
-import SwiftUI
 import Combine
 
 @MainActor
-final class DerivedDataViewModel: ObservableObject {
+final class DisplaySizeViewModel: ObservableObject {
     
     @Published private(set) var size: UInt64 = 0
     @Published var isLoading = false
@@ -18,9 +17,10 @@ final class DerivedDataViewModel: ObservableObject {
     private let coordinator: StorageCoordinator
     private var cancellables = Set<AnyCancellable>()
     
-    init(repository: IDEStorageRepository) {
+    init(repository: IDEStorageRepository,location: any ClearableLocation) {
+        
         coordinator = StorageCoordinator(
-            location: .derivedData,
+            location: location,
             repository: repository
         )
         

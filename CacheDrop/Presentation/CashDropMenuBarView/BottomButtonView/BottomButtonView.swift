@@ -16,7 +16,7 @@ struct BottomButtonsView: View {
     }
     
     var introString: String {
-        "CacheDrop is a tool to help you clean files and folders that XCode keeps creating for you. It's like a personal XCode Cleaner, but with more features and customization options. \n\nThis started as a learner's project but I have ended up making it as utility app. Hope this makes your life easy working with XCode.\n Cheers🍻"
+        "CacheDrop is a tool to help you clean files and folders that IDE keep creating for you. It's like a personal IDE Cleaner, but with more features and customization options. \n\nThis started as a learner's project but I have ended up making it as utility app. Hope this makes your life easy working with your IDEs.\n Cheers🍻"
     }
     
     var body: some View {

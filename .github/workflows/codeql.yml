@@ -49,7 +49,7 @@ jobs:
           fi
 
           # Build the main app target in Release mode
-          xcodebuild -workspace CacheDrop.xcworkspace \
+          xcodebuild -project CacheDrop.xcodeproj \
                      -scheme CacheDrop \
                      -configuration Release \
                      -sdk iphonesimulator \

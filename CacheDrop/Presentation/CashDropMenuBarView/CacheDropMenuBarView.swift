@@ -91,7 +91,7 @@ struct AndroidStudioView : View {
     var body: some View {
         
         Spacer()
-        if CacheDropIDEChecker.userMacMachine(has: .xcode) {
+        if CacheDropIDEChecker.userMacMachine(has: .androidStudio) {
             DisplaySizeView(viewModel: DisplaySizeViewModel(repository: DefaultIDEStorageRepository(),
                                                             location: AndroidStudioStorageLocation.gradleCaches),
                             viewType: .gradle)

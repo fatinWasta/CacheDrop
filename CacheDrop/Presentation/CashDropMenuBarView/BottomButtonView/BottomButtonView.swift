@@ -59,7 +59,7 @@ struct FeedbackButtonView: View {
     private func sendEmail() {
         var components = URLComponents()
         components.scheme = "mailto"
-        components.path = "fatin@particle41.com"
+        components.path = "fatinwasta@hotmail.com"
         components.queryItems = [
             URLQueryItem(name: "subject", value: "Feedback / Claps"),
             URLQueryItem(name: "body", value: "Hello,")

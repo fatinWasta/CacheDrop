@@ -2,11 +2,20 @@
 
 **Clean IDE cache effortlessly on macOS**
 
+
+
 CacheDrop is a simple macOS utility that helps you identify and remove cached IDE data and build artifacts and lives in your status bar — saving disk space and improving performance.
 
 It’s designed as a local utility tool with a straightforward UI and zero server dependencies.
 
----
+Xcode View:
+
+<img width="551" height="697" alt="When Xcode is installed" src="https://github.com/user-attachments/assets/f673e58e-d3aa-43ee-b9cb-95281d4e1424" /> 
+
+Android Studio View:
+
+<img width="561" height="501" alt="When Android Studio is not installed" src="https://github.com/user-attachments/assets/478caf8e-3a28-4686-8130-5fdeeff010a0" />
+
 
 ## ✨ What It Does
 
@@ -14,6 +23,7 @@ It’s designed as a local utility tool with a straightforward UI and zero serve
 - Provides a one-click clean option
 - Shows cache size before deletion
 - Keeps your disk clean without manual search & delete
+- Automations for Xcode
 
 ---
 

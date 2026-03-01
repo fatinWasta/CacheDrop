@@ -17,8 +17,6 @@ final class AutomationStorage {
     func save(_ setting: AutomationSetting) {
         do {
             let data = try JSONEncoder().encode(setting)
-            debugPrint("Saving UD key:", key(for: setting.locationKey))
-            debugPrint("Saving UD data:", data)
             defaults.set(data, forKey: key(for: setting.locationKey))
         } catch {
             assertionFailure("Encoding failed")
@@ -31,8 +29,6 @@ final class AutomationStorage {
         guard let data = defaults.data(forKey: storageKey) else {
             return nil
         }
-        debugPrint("Loading UD: \(storageKey)")
-        debugPrint("Loading UD data: \(data)")
         return try? JSONDecoder().decode(AutomationSetting.self, from: data)
     }
     

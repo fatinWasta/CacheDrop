@@ -2,7 +2,7 @@
 
 **Clean IDE cache effortlessly on macOS**
 
-CacheDrop is a simple macOS utility that helps you identify and remove cached IDE data and build artifacts — saving disk space and improving performance.
+CacheDrop is a simple macOS utility that helps you identify and remove cached IDE data and build artifacts and lives in your status bar — saving disk space and improving performance.
 
 It’s designed as a local utility tool with a straightforward UI and zero server dependencies.
 
@@ -32,6 +32,7 @@ CacheDrop helps you:
 ## ⚙️ How It Works
 
 1. Launch CacheDrop
+2. Open CacheDrop from status bar.
 2. View total cache size
 3. Click “Clean” to remove selected caches
 

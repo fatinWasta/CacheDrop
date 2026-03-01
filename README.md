@@ -32,7 +32,7 @@ CacheDrop helps you:
 ## ⚙️ How It Works
 
 1. Launch CacheDrop
-2. View total ca che size
+2. View total cache size
 3. Click “Clean” to remove selected caches
 
 No complex configuration. No need to open Finder manually.
